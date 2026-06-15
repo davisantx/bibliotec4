@@ -100,9 +100,7 @@ def configurar_menus():
     # Formulário para inserir o nome do autor para efetuar uma busca
     (formulario_busca_nome_autor
         .add_campo("nome", "Insira o nome do autor")
-        .ao_confirmar(processar_busca_de_livros_de_um_autor_pelo_nome_do_autor)
-    )
-
+        .ao_confirmar(processar_busca_de_livros_de_um_autor_pelo_nome_do_autor))
 
     # Adiciona navegação no menu de selecionar livro
     menu_selecionar_livro.add_navegacao("Voltar")

@@ -4,6 +4,22 @@ from data.db import buscar, buscar_todos, excluir, listar, salvar
 
 
 def montar_livro(titulo: str, nome_autor: str, status: str) -> dict | None:
+
+    """
+    Função destinada a:
+        - Receber os dados do livro
+        - Aplicar validação
+        - E retornar o dicionário que representa o livro caso passe na validação
+
+    Caso o título seja curto demais:
+        - Imprime 'Título muito curto!'
+        - Retorna None
+
+    Caso o status não seja 'disponivel' ou 'emprestado':
+        - Imprime 'Status inválido!'
+        - Retorna None
+    """
+    
     if len(titulo.replace(" ", "")) < 1:
         print("Título muito curto!")
         return None
@@ -33,23 +49,21 @@ def processar_criacao_do_livro(dados: dict) -> bool:
     """
     Função destinada a chamar as funções de validação e retorno do 'autor' e 'livro',
     efetuando, com esses dicionários, a operação de salvar no shelve.
-
-    - Retorna False quando:
-        - Informação do autor é inválida
-        - Informação do livro é inválida
-    
-    - Retorna True quando:
-        - Salva o livro
     """
     
     autor = montar_autor(dados["autor"])
+
+    # Verifica se autor é None (Inválido)
     if not autor:
         return False
-    
+
+    # Verifica se o autor já existe
+    # Se não existir, salva o novo autor
     if not buscar("autores", "nome", autor["nome"]):
         salvar("autores", autor)
     
     livro = montar_livro(dados["titulo"], dados["autor"], "disponivel")
+    
     if not livro:
         return False
     
@@ -99,10 +113,7 @@ def processar_busca_de_livro_pelo_titulo(dados: dict):
     - Se encontrar:
         - Imprime as informações do livro
     - Se não encontrar:
-        - Imprime 'Não há livro com esse título'
-    
-    - Retorna True quando:
-        - Há pelo menos um livro salvo
+        - Imprime 'Não há livro com esse título!'
     """
     
     titulo = dados["titulo"]
@@ -130,10 +141,12 @@ def processar_exclusao_de_livro(dados: dict):
         - Um dicionário com uma chave "id"
         - Um dicionário com uma chave "titulo"
 
-    - Se excluir:
+    - Se conseguir excluir:
         - Imprime 'Livro excluido com sucesso!'
-    - Se não excluir:
+        - Retorna True
+    - Se não conseguir excluir:
         - Imprime 'Erro na exclusão do livro!'
+        - Retorna False
     """
     
     campo = "titulo"
