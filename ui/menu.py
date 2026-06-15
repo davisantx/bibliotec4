@@ -34,7 +34,7 @@ class Menu(IO):
         return self
 
     def limpar_opcoes(self) -> "Menu":
-        self._opcoes = [o for o in self._opcoes if o[0] == 0]
+        self._opcoes = [opcao for opcao in self._opcoes if opcao[0] == 0]
         return self
     
     def exibir(self) -> str | None:
