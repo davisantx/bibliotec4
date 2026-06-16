@@ -2,7 +2,7 @@ from ui.tabela import formatar_tabela
 from data.db import buscar_todos, listar
 
 
-def mostrar_os_livros_recentes():
+def mostrar_os_livros_recentes() -> None:
 
     """
     Função destinada a buscar todos os livros salvos e exibir pela
@@ -41,7 +41,7 @@ def mostrar_os_livros_recentes():
 
     print(saida)
 
-def mostrar_quais_livros_cada_autor_tem_na_biblioteca():
+def mostrar_quais_livros_cada_autor_tem_na_biblioteca() -> None:
 
     """
     Função destinada a buscar todos os livros de cada autor registrado,

@@ -1,9 +1,9 @@
-from core.autores import montar_autor
+from core.autores import criar_autor
 from ui.tabela import formatar_tabela
 from data.db import buscar, buscar_todos, excluir, listar, salvar
 
 
-def montar_livro(titulo: str, nome_autor: str, status: str) -> dict | None:
+def criar_livro(titulo: str, nome_autor: str, status: str) -> dict | None:
 
     """
     Função destinada a:
@@ -20,10 +20,6 @@ def montar_livro(titulo: str, nome_autor: str, status: str) -> dict | None:
         - Retorna None
     """
     
-    if len(titulo.replace(" ", "")) < 1:
-        print("Título muito curto!")
-        return None
-    
     if status.strip().lower() not in ["disponivel", "emprestado"]:
         print("Status inválido!")
         return None
@@ -31,12 +27,14 @@ def montar_livro(titulo: str, nome_autor: str, status: str) -> dict | None:
     autores = listar("autores")
     
     autor = None
-    
+
+    # Busca se o autor já existe
     for autor_item in autores:
         if autor_item["nome"] == nome_autor:
             autor = autor_item
             break
 
+    # Retorna dicionário que representa o Autor
     return {
         "id": len(listar("livros")) + 1,
         "titulo": titulo.strip(),
@@ -51,7 +49,7 @@ def processar_criacao_do_livro(dados: dict) -> bool:
     efetuando, com esses dicionários, a operação de salvar no shelve.
     """
     
-    autor = montar_autor(dados["autor"])
+    autor = criar_autor(dados["autor"])
 
     # Verifica se autor é None (Inválido)
     if not autor:
@@ -62,7 +60,7 @@ def processar_criacao_do_livro(dados: dict) -> bool:
     if not buscar("autores", "nome", autor["nome"]):
         salvar("autores", autor)
     
-    livro = montar_livro(dados["titulo"], dados["autor"], "disponivel")
+    livro = criar_livro(dados["titulo"], dados["autor"], "disponivel")
     
     if not livro:
         return False
@@ -99,13 +97,12 @@ def processar_busca_livros_pelo_status(status: str) -> bool:
         dado += f"\nLivro de ID: {livro["id"]}\n"
         dado += f"Titulo: {livro["titulo"]}\n"
         dado += f"Autor: {livro["autor"]["nome"]}\n"
-
         saida += formatar_tabela(dado)
 
     print(saida)
     return True
 
-def processar_busca_de_livro_pelo_titulo(dados: dict):
+def processar_busca_de_livro_pelo_titulo(dados: dict) -> bool:
 
     """
     Função destinada a buscar um livro pelo título\n
@@ -128,11 +125,13 @@ def processar_busca_de_livro_pelo_titulo(dados: dict):
         saida += f"Autor: {livro["autor"]["nome"]}\n"
 
         print(formatar_tabela(saida))
-        return
+        return True
+        
     print("Não há livro com esse titulo!")
+    return False
 
     
-def processar_exclusao_de_livro(dados: dict):
+def processar_exclusao_de_livro(dados: dict) -> bool:
 
     """
     Função destinada a buscar um livro pelo excluir um livro\n
@@ -164,5 +163,3 @@ def processar_exclusao_de_livro(dados: dict):
 
     print("Erro na exclusão do livro!")
     return False
-    
-

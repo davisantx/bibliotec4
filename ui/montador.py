@@ -66,12 +66,12 @@ def configurar_menus():
     # Formulário para inserir o ID do livro disponível que será efetuado o emprestimo
     (formulario_emprestimo
         .add_campo("id", "ID do livro", input_personalizado=exibir_livros_disponiveis)
-        .ao_confirmar(processar_emprestimo))
+        .ao_confirmar_submissao(processar_emprestimo))
     
     # Formulário para inserir o ID do livro emprestado que será efetuado a devolução
     (formulario_devolucao
         .add_campo("id", "ID do livro", input_personalizado=exibir_livros_emprestados)
-        .ao_confirmar(processar_devolucao))
+        .ao_confirmar_submissao(processar_devolucao))
     
     formulario_cadastro_autor.add_campo("nome", "Nome do autor")
     
@@ -79,28 +79,28 @@ def configurar_menus():
     (formulario_cadastro_livro
         .add_campo("titulo", "Título do livro")
         .add_campo("autor", "Autor", input_personalizado=exibir_autor)
-        .ao_confirmar(processar_criacao_do_livro))
+        .ao_confirmar_submissao(processar_criacao_do_livro))
         
     # Formulário pra inserir o título pra efetuar a busca do livro pelo título
     (formulario_busca_titulo
         .add_campo("titulo", "Título")
-        .ao_confirmar(processar_busca_de_livro_pelo_titulo))
+        .ao_confirmar_submissao(processar_busca_de_livro_pelo_titulo))
     
     # Formulário pra inserir o título pra efetuar a exclusão do livro pelo título
     (formulario_excluir_titulo
         .add_campo("titulo", "Insira o título")
-        .ao_confirmar(processar_exclusao_de_livro))
+        .ao_confirmar_submissao(processar_exclusao_de_livro))
     
     # Formulário pra inserir o ID pra efetuar a exclusão do livro pelo ID
     (formulario_excluir_id
         .add_campo("id", "Insira o ID")
-        .ao_confirmar(processar_exclusao_de_livro))
+        .ao_confirmar_submissao(processar_exclusao_de_livro))
     
     
     # Formulário para inserir o nome do autor para efetuar uma busca
     (formulario_busca_nome_autor
         .add_campo("nome", "Insira o nome do autor")
-        .ao_confirmar(processar_busca_de_livros_de_um_autor_pelo_nome_do_autor))
+        .ao_confirmar_submissao(processar_busca_de_livros_de_um_autor_pelo_nome_do_autor))
 
     # Adiciona navegação no menu de selecionar livro
     menu_selecionar_livro.add_navegacao("Voltar")

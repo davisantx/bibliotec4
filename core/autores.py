@@ -2,18 +2,20 @@ from ui.tabela import formatar_tabela
 from data.db import buscar, listar
 
 
-def montar_autor(nome: str) -> dict | None:
+def criar_autor(nome: str) -> dict | None:
     if len(nome.replace(" ", "")) < 1:
         print("Nome do autor muito curto!")
         return None
     
     nome = nome.strip()
+    
     autor_existente = buscar("autores", "nome", nome)
     
     if autor_existente:
         return autor_existente
     
     autores = listar("autores")
+    
     return {
         "nome": nome,
         "id": len(autores) + 1

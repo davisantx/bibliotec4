@@ -1,6 +1,7 @@
 from core.livros import processar_busca_livros_pelo_status
 from data.db import listar
 from ui.componentes import formulario_cadastro_autor, menu_selecionar_autor
+from ui.instrucoes import Instrucao
 
 
 def exibir_autor() -> str:
@@ -8,8 +9,10 @@ def exibir_autor() -> str:
     """
     Função que representa um input personalizado para o formulário
     de cadastro de livro
+
+    Ela utiliza um menu para receber a entrada.
     
-    Ela exibe um menu, onde cada autor existente na biblioteca é uma opção
+    Nesse menu, cada autor existente na biblioteca é uma opção
     selecionável;
 
     Fica algo como:
@@ -24,6 +27,8 @@ def exibir_autor() -> str:
     Escolha: 1
     ```
     """
+
+    opcao_voltar = "0"
     
     autores = listar("autores")
     
@@ -33,19 +38,28 @@ def exibir_autor() -> str:
     for autor in autores:
         menu_selecionar_autor.add_opcao(autor["nome"])
     
-    escolha = menu_selecionar_autor.exibir()
+    instrucao_menu_selecionar_autor = menu_selecionar_autor.exibir()
     
-    if escolha is None:
-        return "0"
-    
-    if escolha == "Cadastrar novo autor":
-        dados = formulario_cadastro_autor.exibir()
-        if dados is None:
-            return "0"
-        return dados["nome"]
-    
-    return escolha
+    if instrucao_menu_selecionar_autor == Instrucao.VOLTAR:
+        return opcao_voltar
+       
+    if instrucao_menu_selecionar_autor == Instrucao.CONFIRMAR:
+        texto_da_opcao_selecionada = menu_selecionar_autor.get_opcao_selecionada()
 
+        if texto_da_opcao_selecionada == "Cadastrar novo autor":
+            instrucao_formulario = formulario_cadastro_autor.exibir()
+
+            if instrucao_formulario == Instrucao.VOLTAR:
+                return opcao_voltar
+            
+            dados = formulario_cadastro_autor.get_dados()
+            return dados["nome"]
+            
+        if texto_da_opcao_selecionada is not None:         
+            return texto_da_opcao_selecionada
+        
+    return opcao_voltar
+    
 def exibir_livros_disponiveis() -> str:
 
     """
@@ -77,7 +91,7 @@ def exibir_livros_disponiveis() -> str:
     """
     
     processar_busca_livros_pelo_status("disponivel")
-    return input("ID do livro: ").strip()
+    return input("ID do livro: ")
 
 def exibir_livros_emprestados() -> str:
 
@@ -105,4 +119,4 @@ def exibir_livros_emprestados() -> str:
     """
     
     processar_busca_livros_pelo_status("emprestado")
-    return input("ID do livro: ").strip()
+    return input("ID do livro: ")
