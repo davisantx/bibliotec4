@@ -168,8 +168,21 @@ class Formulario(IO):
         self._acao_ao_confirmar_submissao = acao
         return self
 
-    def add_campo(self, chave: str, nome_campo: str, input_personalizado=None) -> "Formulario":
-        self._campos.append((chave, nome_campo, input_personalizado or (lambda: input(f"{nome_campo}: "))))
+    def add_campo(self, chave: str, nome_campo: str, input_personalizado=None, tipo_da_entrada=str) -> "Formulario":
+        input_campo = lambda: input(f"{nome_campo}: ")
+
+        if input_personalizado:
+            input_campo = input_personalizado
+
+        campo = (
+            chave, 
+            nome_campo, 
+            input_campo, 
+            tipo_da_entrada
+        )
+
+        self._campos.append(campo)
+        
         return self
 
 
@@ -180,11 +193,13 @@ class Formulario(IO):
 
 
     def verificar_se_input_e_vazio(self, valor_input_formatado: str) -> bool:
+
         input_e_vazio = len(valor_input_formatado) == 0
         if input_e_vazio:
             print("\nErro! Campo vázio.")
         return input_e_vazio
-        
+
+    
     def formatar_valor_input(self, valor_input: str) -> str:
         return valor_input.strip()
             
@@ -199,15 +214,32 @@ class Formulario(IO):
         """
         
         self._dados = {}
-        for chave, _, input_campo in self._campos:
+
+        tipo_e_valor_e_valido: bool = False
+
+        for chave, _, input_campo, tipo_de_entrada in self._campos:
+            
             valor_recebido = input_campo()
             valor = self.formatar_valor_input(valor_recebido)
 
-            # Se o usuário digitar 0 no campo do formulário ele volta para o Menu anterior
-            if valor == "0" or valor is None or self.verificar_se_input_e_vazio(valor):
+            if self.verificar_se_input_e_vazio(valor):
                 return False
-                
-            self._dados[chave] = valor
+
+            if tipo_de_entrada is int:
+                try:
+                    valor = int(valor)
+                except ValueError:
+                    print("Valor inválido de ID! Insira um número!")
+                    return False
+            
+            # Se o usuário digitar 0 no campo do formulário ele volta para o Menu anterior
+            if tipo_de_entrada == int and valor == 0:
+                return False
+
+            if tipo_de_entrada == str and valor == "0":
+                return False
+
+            self._dados[chave] = str(valor)
         return True
     
     def _executar_a_acao_de_submissao(self) -> bool:

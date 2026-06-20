@@ -13,7 +13,6 @@ def configurar_menus():
     bem como suas respectivas acões.
     """
 
-    
     # Menu para registrar emprestimos e/ou devoluções
     (menu_emprestimos_e_devolucoes
         .add_opcao("Registrar um empréstimo", acao=formulario_emprestimo.exibir)
@@ -65,12 +64,12 @@ def configurar_menus():
     
     # Formulário para inserir o ID do livro disponível que será efetuado o emprestimo
     (formulario_emprestimo
-        .add_campo("id", "ID do livro", input_personalizado=exibir_livros_disponiveis)
+        .add_campo("id", "ID do livro", input_personalizado=exibir_livros_disponiveis, tipo_da_entrada=int)
         .ao_confirmar_submissao(processar_emprestimo))
     
     # Formulário para inserir o ID do livro emprestado que será efetuado a devolução
     (formulario_devolucao
-        .add_campo("id", "ID do livro", input_personalizado=exibir_livros_emprestados)
+        .add_campo("id", "ID do livro", input_personalizado=exibir_livros_emprestados, tipo_da_entrada=int)
         .ao_confirmar_submissao(processar_devolucao))
     
     formulario_cadastro_autor.add_campo("nome", "Nome do autor")
@@ -93,7 +92,7 @@ def configurar_menus():
     
     # Formulário pra inserir o ID pra efetuar a exclusão do livro pelo ID
     (formulario_excluir_id
-        .add_campo("id", "Insira o ID")
+        .add_campo("id", "Insira o ID", tipo_da_entrada=int)
         .ao_confirmar_submissao(processar_exclusao_de_livro))
     
     

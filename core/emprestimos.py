@@ -19,7 +19,7 @@ def processar_emprestimo(dados: dict) -> bool:
         - Imprime 'Livro não está disponível!'
         - Retorna False
     """
-    
+    print(f"dados: {dados}")
     livro = buscar("livros", "id", int(dados["id"]))
     
     if not livro:
