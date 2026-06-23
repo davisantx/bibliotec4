@@ -18,6 +18,7 @@ from ui.coletores import (
     exibir_lista_com_autores_que_podem_ser_excluidos,
     exibir_livros_disponiveis,
     exibir_livros_emprestados,
+    exibir_livros_para_excluir_pelo_id,
     exibir_livros_para_excluir_pelo_titulo,
 )
 from ui.componentes import (
@@ -134,13 +135,14 @@ def configurar_menus():
 
     # Formulário pra inserir o ID pra efetuar a exclusão do livro pelo ID
     (formulario_excluir_id
-        .add_campo("id", "Insira o ID", tipo_da_entrada=int)
+        .add_campo("id", "Insira o ID", input_personalizado=exibir_livros_para_excluir_pelo_id)
         .ao_confirmar_submissao(processar_exclusao_de_livro))
 
     (menu_selecione_o_autor_sem_livros_para_excluir
         .add_navegacao("Voltar")
     )
 
+    
     
     # Formulário para inserir o nome do autor para efetuar uma busca
     (formulario_busca_nome_autor

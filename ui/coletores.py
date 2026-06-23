@@ -212,3 +212,7 @@ def exibir_livros_para_excluir_pelo_titulo():
 
     return exibir_input_campo("Insira o título")
 
+def exibir_livros_para_excluir_pelo_id():
+    exibir_livros_de_cada_autor(listar("livros"), listar("autores"))
+
+    return exibir_input_campo("Insira o ID")

@@ -70,7 +70,7 @@ def exibir_livros_de_cada_autor(livros: list[dict], autores: list[dict]):
         dado += f"{autor['nome']} → {len(livros_do_autor)} livro(s)"
 
         for livro in livros_do_autor:
-            dado += f"\n  - {livro['titulo']}"
+            dado += f"\n  - {livro['titulo']} -> ID: {livro['id']}"
 
         saida += formatar_tabela(dado)
 

@@ -48,7 +48,7 @@ def processar_criacao_do_livro(dados: dict) -> bool:
         exibir_mensagem("Título muito curto!", erro=True)
         return False
 
-    if len(dados["titulo"]) > 99:
+    if len(dados["titulo"]) > 79:
         exibir_mensagem("Título muito longo!", erro=True)
         return False
         
@@ -109,7 +109,7 @@ def processar_busca_de_livro_pelo_titulo(dados: dict) -> bool:
     """
 
     titulo = dados["titulo"]
-
+    
     livro = buscar("livros", "titulo", titulo)
 
     if livro:
@@ -140,16 +140,23 @@ def processar_exclusao_de_livro(dados: dict) -> bool:
 
     id = dados.get("id")
 
+    dado_a_ser_buscado = dados.get("titulo")
+    
     if id:
+        dado_a_ser_buscado = dados["id"]
         campo = "id"
         valor = int(id)
 
+    livro = buscar("livros", campo, dado_a_ser_buscado)
+    
+    if livro is None:
+        exibir_mensagem("Erro na exclusão do livro!")
+        return False
 
     
-    titulo = buscar("livros", "titulo", dados["titulo"])
     if excluir("livros", campo, valor):
-        exibir_mensagem(f"Livro '{titulo}' excluído com sucesso!")
+        exibir_mensagem(f"Livro '{livro["titulo"]}' excluído com sucesso!")
         return True
 
-    exibir_mensagem(f"Erro na exclusão do livro '{titulo}'!", erro=True)
+    exibir_mensagem(f"Erro na exclusão do livro '{livro["titulo"]}'!", erro=True)
     return False
