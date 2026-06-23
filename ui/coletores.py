@@ -62,13 +62,13 @@ def exibir_lista_com_autores_existentes() -> str:
 
             dados = formulario_cadastro_autor.get_dados()
             nome_formatado = " ".join(dados["nome"].split())
-            
-            for autor in autores:
-                nome_existente = " ".join(autor["nome"].split())
-                
-                if nome_formatado.lower() == nome_existente.lower():
-                    exibir_mensagem(f"\nErro: O autor '{nome_existente}' já está cadastrado!", erro=True)
-                    return opcao_voltar
+
+            nomes_existentes = {" ".join(autor["nome"].split()).lower() for autor in autores}
+
+            # só serve pra nomes inseridos no campo input
+            if nome_formatado.lower() in nomes_existentes:
+                exibir_mensagem(f"Erro: O autor '{nome_formatado}' já está cadastrado!", erro=True)
+                return opcao_voltar
 
             return nome_formatado
 
@@ -87,7 +87,7 @@ def exibir_lista_com_autores_que_podem_ser_excluidos() -> str:
     autores_sem_livros = obter_autores_sem_livros(listar("livros"), listar("autores"))
 
     if not autores_sem_livros:
-        exibir_mensagem("\nTodos os autores possuem livros associados. Não há o que excluir.", erro=True)
+        exibir_mensagem("Todos os autores possuem livros associados. Não há o que excluir.", erro=True)
         return opcao_voltar
 
     menu_selecione_o_autor_sem_livros_para_excluir.limpar_opcoes()
@@ -107,7 +107,7 @@ def exibir_lista_com_autores_que_podem_ser_excluidos() -> str:
             sucesso_ao_apagar = excluir("autores", "nome", texto_da_opcao_selecionada)
                 
             if sucesso_ao_apagar:
-                exibir_mensagem(f"Autor '{texto_da_opcao_selecionada}' excluído com sucesso!\n")
+                exibir_mensagem(f"Autor '{texto_da_opcao_selecionada}' excluído com sucesso!")
             else:
                 exibir_mensagem(f"Erro: Não foi possível encontrar o autor '{texto_da_opcao_selecionada}'!\n", erro=True)
      

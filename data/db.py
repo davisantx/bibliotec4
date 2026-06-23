@@ -20,6 +20,13 @@ def inicializar_banco() -> None:
         raise
 
 
+def listar_tudo():
+    with shelve.open(CAMINHO_BD, writeback=True) as db:
+        print(db.get("livros"), [])
+        print(db.get("autores"), [])
+
+
+
 def listar(chave: str) -> list[dict]:
     """
     Função destinada a obter dados de uma chave no dicionário do shelve.\n

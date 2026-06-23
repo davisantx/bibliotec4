@@ -41,12 +41,8 @@ def criar_livro(titulo: str, nome_autor: str, status: str) -> dict:
 
 def processar_criacao_do_livro(dados: dict) -> bool:
     """
-    Função destinada a chamar a efetuar a operação de salvar no shelve.
+    Função destinada a efetuar a operação de salvar no shelve.
     """
-
-    if buscar("livros", "titulo", dados["titulo"]):
-        exibir_mensagem("Livro com mesmo título já existe!", erro=True)
-        return False
 
     if len(dados["titulo"]) < 4:
         exibir_mensagem("Título muito curto!", erro=True)
@@ -56,22 +52,26 @@ def processar_criacao_do_livro(dados: dict) -> bool:
         exibir_mensagem("Título muito longo!", erro=True)
         return False
         
-    autor = criar_autor(dados["autor"])
-
-    if buscar("autores", "nome", autor["nome"]):
-        exibir_mensagem("Autor com mesmo nome já existe!", erro=True)
-        return False
+    autores = listar("autores")
+    nomes_existentes = {autor["nome"].lower() for autor in autores}
+    nome_recebido = dados["autor"]
     
-    if len(autor["nome"]) < 3:
-        exibir_mensagem("Nome do autor curto demais!", erro=True)
-        return False
     
-    salvar("autores", autor)
+    if nome_recebido.lower() not in nomes_existentes:
+        autor = criar_autor(nome_recebido)
+        
+        if len(autor["nome"]) < 3:
+            exibir_mensagem("Nome do autor curto demais!", erro=True)
+            return False
+            
+        salvar("autores", autor)
 
-    livro = criar_livro(dados["titulo"], dados["autor"], "disponivel")
 
+    titulo = dados["titulo"]
+    livro = criar_livro(titulo, dados["autor"], "disponivel")
     salvar("livros", livro)
-    exibir_mensagem(f"Livro '{dados["titulo"]}' com sucesso!")
+    
+    exibir_mensagem(f"Livro '{titulo}' cadastrado com sucesso!")
     return True
 
 
@@ -144,9 +144,12 @@ def processar_exclusao_de_livro(dados: dict) -> bool:
         campo = "id"
         valor = int(id)
 
+
+    
+    titulo = buscar("livros", "titulo", dados["titulo"])
     if excluir("livros", campo, valor):
-        exibir_mensagem(f"\nLivro '{dados["titulo"]}' excluído com sucesso!\n")
+        exibir_mensagem(f"Livro '{titulo}' excluído com sucesso!")
         return True
 
-    exibir_mensagem(f"Erro na exclusão do livro '{dados["titulo"]}'!", erro=True)
+    exibir_mensagem(f"Erro na exclusão do livro '{titulo}'!", erro=True)
     return False
