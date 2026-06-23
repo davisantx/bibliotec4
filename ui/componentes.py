@@ -31,6 +31,9 @@ formulario_cadastro_autor = Formulario("Insira as informações do autor")
 
 menu_selecionar_livro = Menu("Selecione o livro")
 
+menu_selecione_o_autor_sem_livros_para_excluir = Menu("Selecione um dos autores sem livros para excluir")
+menu_exclusao_de_autor = Menu("Excluir autor")
+
 
 formulario_emprestimo = Formulario("Registrar empréstimo")
 formulario_devolucao = Formulario("Registrar devolução")
