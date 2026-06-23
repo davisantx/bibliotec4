@@ -1,4 +1,5 @@
 from data.db import atualizar, buscar, listar
+from ui.formatador_saidas import exibir_mensagem
 
 
 def processar_emprestimo(dados: dict) -> bool:
@@ -26,8 +27,9 @@ def processar_emprestimo(dados: dict) -> bool:
         return False
 
     if livro["status"] != "disponivel":
-        print(
-            "Erro: O livro não pode ser emprestado! O livro não está disponível, está emprestado."
+        exibir_mensagem(
+            "Erro: O livro não pode ser emprestado! O livro não está disponível, está emprestado.",
+            erro=True
         )
         return False
 
@@ -61,8 +63,9 @@ def processar_devolucao(dados: dict) -> bool:
         return False
 
     if livro["status"] != "emprestado":
-        print(
-            "Erro: O livro não pode ser devolvido! O livro não está emprestado, está disponível."
+        exibir_mensagem(
+            "Erro: O livro não pode ser devolvido! O livro não está emprestado, está disponível.",
+            erro=True
         )
         return False
 
