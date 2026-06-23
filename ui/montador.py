@@ -136,7 +136,8 @@ def configurar_menus():
 
     # Formulário pra inserir o título pra efetuar a exclusão do livro pelo título
     (formulario_excluir_titulo
-        .add_campo("titulo", "Insira o título", input_personalizado=exibir_livros_para_excluir_pelo_titulo)
+        .add_campo("titulo_busca", "Insira um pedaço do título")
+        .add_campo("titulo", "Selecione o livro pelo título", input_personalizado=exibir_possiveis_titulos_de_livro)
         .ao_confirmar_submissao(processar_exclusao_de_livro))
 
     # Formulário pra inserir o ID pra efetuar a exclusão do livro pelo ID
@@ -152,10 +153,10 @@ def configurar_menus():
         .add_navegacao("Voltar")
     )
     
-    # Formulário para inserir o nome do autor para efetuar uma busca
+    # Formulário para inserir o nome do autor para ef-etuar uma busca
     (formulario_busca_nome_autor
-        .add_campo("nome_autor_busca" ,"Digite uma parte do nome do autor")
-        .add_campo("nome", "Selecione o autor", input_personalizado=exibir_possiveis_nomes_de_autor)
+        .add_campo("nome_busca", "Insira o nome do autor")
+        .add_campo("titulo", "Selecione o autor pelo nome", input_personalizado=exibir_possiveis_nomes_de_autor)
         .ao_confirmar_submissao(processar_busca_de_livros_de_um_autor_pelo_nome_do_autor))
 
     # Adiciona navegação no menu de selecionar livro

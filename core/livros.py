@@ -140,14 +140,11 @@ def processar_exclusao_de_livro(dados: dict) -> bool:
 
     id = dados.get("id")
 
-    dado_a_ser_buscado = dados.get("titulo")
-    
     if id:
-        dado_a_ser_buscado = dados["id"]
         campo = "id"
         valor = int(id)
 
-    livro = buscar("livros", campo, dado_a_ser_buscado)
+    livro = buscar("livros", campo, valor)
     
     if livro is None:
         exibir_mensagem("Erro na exclusão do livro!")
