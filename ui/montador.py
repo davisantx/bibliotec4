@@ -20,6 +20,8 @@ from ui.coletores import (
     exibir_livros_emprestados,
     exibir_livros_para_excluir_pelo_id,
     exibir_livros_para_excluir_pelo_titulo,
+    exibir_possiveis_nomes_de_autor,
+    exibir_possiveis_titulos_de_livro,
 )
 from ui.componentes import (
     formulario_busca_nome_autor,
@@ -41,6 +43,8 @@ from ui.componentes import (
     menu_selecionar_autor,
     menu_selecionar_livro,
     menu_selecione_o_autor_sem_livros_para_excluir,
+    menu_selecione_possiveis,
+    
 )
 
 
@@ -125,8 +129,10 @@ def configurar_menus():
 
     # Formulário pra inserir o título pra efetuar a busca do livro pelo título
     (formulario_busca_titulo
-        .add_campo("titulo", "Título")
+        .add_campo("titulo_busca", "Digite uma parte do título")
+        .add_campo("titulo", "Selecione o livro", input_personalizado=exibir_possiveis_titulos_de_livro)
         .ao_confirmar_submissao(processar_busca_de_livro_pelo_titulo))
+
 
     # Formulário pra inserir o título pra efetuar a exclusão do livro pelo título
     (formulario_excluir_titulo
@@ -142,11 +148,14 @@ def configurar_menus():
         .add_navegacao("Voltar")
     )
 
-    
+    (menu_selecione_possiveis
+        .add_navegacao("Voltar")
+    )
     
     # Formulário para inserir o nome do autor para efetuar uma busca
     (formulario_busca_nome_autor
-        .add_campo("nome", "Insira o nome do autor")
+        .add_campo("nome_autor_busca" ,"Digite uma parte do nome do autor")
+        .add_campo("nome", "Selecione o autor", input_personalizado=exibir_possiveis_nomes_de_autor)
         .ao_confirmar_submissao(processar_busca_de_livros_de_um_autor_pelo_nome_do_autor))
 
     # Adiciona navegação no menu de selecionar livro

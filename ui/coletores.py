@@ -1,7 +1,7 @@
-from core.autores import obter_autores_sem_livros, processar_busca_de_livros_de_um_autor_pelo_nome_do_autor
+from core.autores import obter_autores_sem_livros
 from core.livros import processar_busca_livros_pelo_status
-from data.db import excluir, listar
-from ui.componentes import formulario_cadastro_autor, menu_selecionar_autor, menu_selecione_o_autor_sem_livros_para_excluir
+from data.db import buscar, excluir, listar
+from ui.componentes import formulario_busca_nome_autor, formulario_busca_titulo, formulario_cadastro_autor, menu_selecionar_autor, menu_selecione_o_autor_sem_livros_para_excluir, menu_selecione_possiveis
 from ui.estados import Estado
 from ui.formatador_saidas import exibir_input_campo, exibir_livros_de_cada_autor, exibir_mensagem, formatar_tabela
 
@@ -216,3 +216,49 @@ def exibir_livros_para_excluir_pelo_id():
     exibir_livros_de_cada_autor(listar("livros"), listar("autores"))
 
     return exibir_input_campo("Insira o ID")
+
+
+
+def exibir_possiveis_nomes_de_autor() -> str:
+    return exibir_possiveis(formulario_busca_nome_autor, "autores", "nome_autor_busca", "nome")
+
+def exibir_possiveis_titulos_de_livro() -> str:
+    return exibir_possiveis(formulario_busca_titulo, "livros", "titulo_busca", "titulo")
+
+def exibir_possiveis(formulario, tipo_de_dado, chave_busca, chave_real) -> str:
+    voltar = "0"
+    
+    dados = formulario.get_dados()
+    
+    termo_busca = dados.get(chave_busca, "")
+
+    lista = listar(tipo_de_dado)
+    
+    possiveis = [
+        item for item in lista
+        if termo_busca.lower() in item[chave_real].lower()
+    ]
+
+    if not possiveis:
+        exibir_mensagem(f"\nErro: Nenhum livro contendo '{termo_busca}' foi encontrado!", erro=True)
+        return voltar
+
+    menu_selecione_possiveis.limpar_opcoes()
+    
+    for possivel_titulo in possiveis:
+        menu_selecione_possiveis.add_opcao(possivel_titulo[chave_real])
+
+    estado_menu = menu_selecione_possiveis.exibir()
+
+    if estado_menu == Estado.CANCELADO:
+        return voltar
+
+    if estado_menu == Estado.SUCESSO:
+        opcao_selecionada_texto = menu_selecione_possiveis.get_opcao_selecionada()
+
+        if buscar(tipo_de_dado, chave_real, opcao_selecionada_texto) is None:
+            return voltar
+
+        return opcao_selecionada_texto
+        
+    return voltar

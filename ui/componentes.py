@@ -47,3 +47,5 @@ formulario_cadastro_autor = Formulario("Insira as informações do autor")
 
 menu_selecionar_autor = Menu("Selecione o autor")
 formulario_busca_nome_autor = Formulario("Busca dos livros do autor pelo nome")
+
+menu_selecione_possiveis = Menu("Escolha o título")
