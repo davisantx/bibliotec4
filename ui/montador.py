@@ -44,7 +44,6 @@ from ui.componentes import (
     menu_selecionar_livro,
     menu_selecione_o_autor_sem_livros_para_excluir,
     menu_selecione_possiveis,
-    
 )
 
 
